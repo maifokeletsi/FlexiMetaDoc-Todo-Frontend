@@ -1,0 +1,87 @@
+ <div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h1 class="card-title mb-0 text-center">
+            <i class="bi bi-list-check me-2"></i>Todo List
+          </h1>
+        </div>
+        <div class="card-body">
+
+          <form (ngSubmit)="addTodo()" class="mb-4" #todoForm="ngForm">
+            <div class="input-group">
+              <input
+                type="text"
+                [(ngModel)]="newTodo"
+                name="newTodo"
+                class="form-control"
+                placeholder="Enter a new todo..."
+                required
+                maxlength="100"
+                #newTodoInput="ngModel"
+              />
+              <button
+                type="submit"
+                class="btn btn-success"
+                [disabled]="!newTodo || newTodo.trim() === ''"
+              >
+                <i class="bi bi-plus-lg me-1"></i>Add
+              </button>
+            </div>
+          </form>
+
+          <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+          <div *ngIf="todos.length === 0" class="text-center text-muted py-4">
+            <i class="bi bi-clipboard-check" style="font-size: 3rem;"></i>
+            <p class="mb-0 mt-3">No todos yet. Add one above!</p>
+          </div>
+
+          <ul class="list-group" *ngIf="todos.length > 0">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let todo of todos"
+              [ngClass]="{ completed: todo.completed }"
+            >
+              <div class="form-check flex-grow-1">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [checked]="todo.completed"
+                  (change)="toggleCompleted(todo)"
+                  [id]="'todo-' + todo.id"
+                />
+                <label
+                  class="form-check-label"
+                  [for]="'todo-' + todo.id"
+                  [ngClass]="{
+                    'text-decoration-line-through text-muted': todo.completed
+                  }"
+                >
+                  {{ todo.title }}
+                </label>
+              </div>
+              <button
+                type="button"
+                class="btn btn-outline-danger btn-sm ms-2"
+                (click)="removeTodo(todo)"
+                title="Remove todo"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </li>
+          </ul>
+
+          <div class="mt-3 text-center" *ngIf="todos.length > 0">
+            <small class="text-muted">
+              Total: {{ todos.length }} | Completed: {{ getCompletedCount() }} |
+              Remaining: {{ getRemainingCount() }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+
