@@ -1,7 +1,7 @@
 // src/app/models/todo.ts
 export interface Todo {
-  userId: number;
-  id: number;
+  id?: number; // Optional when creating
+  userId: string;
   title: string;
   completed: boolean;
 }
